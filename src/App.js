@@ -4,6 +4,7 @@ import AjouteTache from "./components/AjouteTache";
 import { useState } from "react";
 
 function App() {
+  const [afficheForm, setAfficheForm] = useState(false);
   const [taches, setTaches] = useState([
     {
       id: 1,
@@ -24,6 +25,10 @@ function App() {
       rappel: false,
     },
   ]);
+
+  const onAfficheForm = () => {
+    setAfficheForm(!afficheForm);
+  };
 
   const ajouteTache = (tache) => {
     const id = taches.length + 1;
@@ -48,8 +53,8 @@ function App() {
 
   return (
     <div className="container">
-      <Header />
-      <AjouteTache onAdd={ajouteTache} />
+      <Header onClick={onAfficheForm} afficheFormState={afficheForm} />
+      {afficheForm ? <AjouteTache onAdd={ajouteTache} /> : null}
       {taches.length > 0 ? (
         <Taches taches={taches} onDelete={deleteTache} onToggle={rappelTache} />
       ) : (
