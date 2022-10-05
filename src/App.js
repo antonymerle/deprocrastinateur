@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Taches from "./components/Taches";
+import AjouteTache from "./components/AjouteTache";
 import { useState } from "react";
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
     },
   ]);
 
+  const ajouteTache = (tache) => {
+    console.log(tache);
+  };
+
   const deleteTache = (id) => {
     setTaches(taches.filter((tache) => tache.id !== id));
   };
@@ -39,6 +44,7 @@ function App() {
   return (
     <div className="container">
       <Header />
+      <AjouteTache onAdd={ajouteTache} />
       {taches.length > 0 ? (
         <Taches taches={taches} onDelete={deleteTache} onToggle={rappelTache} />
       ) : (
