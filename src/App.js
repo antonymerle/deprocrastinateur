@@ -8,25 +8,30 @@ function App() {
     {
       id: 1,
       texte: "Sortir les poubelles",
-      date: "27 janvier 2023",
+      echeance: "27 janvier 2023",
       rappel: true,
     },
     {
       id: 2,
       texte: "Tondre le jardin",
-      date: "16 septembre 2023",
+      echeance: "16 septembre 2023",
       rappel: true,
     },
     {
       id: 3,
       texte: "Ramasser les feuilles",
-      date: "15 novembre 2023",
+      echeance: "15 novembre 2023",
       rappel: false,
     },
   ]);
 
   const ajouteTache = (tache) => {
-    console.log(tache);
+    const id = taches.length + 1;
+    const newTache = {
+      id,
+      ...tache,
+    };
+    setTaches([...taches, newTache]);
   };
 
   const deleteTache = (id) => {
