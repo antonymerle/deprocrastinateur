@@ -13,7 +13,7 @@ const Tache = ({ tache, onDelete, onToggle }) => {
           onClick={() => onDelete(tache.id)}
         />
       </h3>
-      <p>{tache.date}</p>
+      <p>{tache.echeance}</p>
     </div>
   );
 };
