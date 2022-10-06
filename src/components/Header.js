@@ -6,7 +6,7 @@ const Header = ({ titre, onClick, afficheFormState }) => {
     <header className="header">
       <h1>{titre}</h1>
       <Bouton
-        couleur={afficheFormState ? "DarkSeaGreen" : "green"}
+        couleur={afficheFormState ? "#1C0F13" : "#EC0B43"}
         texte={afficheFormState ? "masquer" : "ajouter"}
         onClick={onClick}
       />

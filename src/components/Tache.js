@@ -9,7 +9,7 @@ const Tache = ({ tache, onDelete, onToggle }) => {
       <h3>
         {tache.texte}{" "}
         <FaTimes
-          style={{ color: "red", cursor: "pointer" }}
+          style={{ color: "#EC0B43", cursor: "pointer" }}
           onClick={() => onDelete(tache.id)}
         />
       </h3>
