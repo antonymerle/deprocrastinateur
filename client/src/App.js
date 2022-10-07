@@ -1,54 +1,63 @@
 import Header from "./components/Header";
 import Taches from "./components/Taches";
 import AjouteTache from "./components/AjouteTache";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [afficheForm, setAfficheForm] = useState(false);
-  const [taches, setTaches] = useState([
-    {
-      id: 1,
-      texte: "Sortir les poubelles",
-      echeance: "27 janvier 2023",
-      rappel: true,
-    },
-    {
-      id: 2,
-      texte: "Tondre le jardin",
-      echeance: "16 septembre 2023",
-      rappel: true,
-    },
-    {
-      id: 3,
-      texte: "Ramasser les feuilles",
-      echeance: "15 novembre 2023",
-      rappel: false,
-    },
-  ]);
+  const [taches, setTaches] = useState([]);
+
+  const baseURL = "http://localhost:5000/";
+
+  useEffect(() => {
+    const fetchTaches = async () => {
+      fetch(baseURL)
+        .then((res) => res.json())
+        .then((data) => setTaches(data));
+    };
+    fetchTaches();
+  }, [taches]);
 
   const onAfficheForm = () => {
     setAfficheForm(!afficheForm);
   };
 
   const ajouteTache = (tache) => {
-    const id = taches.length + 1;
-    const newTache = {
-      id,
-      ...tache,
-    };
-    setTaches([...taches, newTache]);
+    const postRequest = new Request(baseURL, {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify(tache),
+    });
+
+    console.log(postRequest);
+
+    fetch(postRequest)
+      .then((res) => res.json())
+      .then((res) => console.log(res));
   };
 
-  const deleteTache = (id) => {
-    setTaches(taches.filter((tache) => tache.id !== id));
+  const deleteTache = (tache_id) => {
+    const deleteRequest = new Request(baseURL, {
+      method: "DELETE",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ tache_id }),
+    });
+
+    fetch(deleteRequest)
+      .then((res) => res.json())
+      .then((res) => console.log(res));
   };
 
-  const rappelTache = (id) => {
-    setTaches(
-      taches.map((tache) =>
-        tache.id === id ? { ...tache, rappel: !tache.rappel } : tache
-      )
-    );
+  const rappelTache = (tache_id, rappel) => {
+    const putRequest = new Request(baseURL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tache_id, rappel: !rappel }),
+    });
+
+    fetch(putRequest)
+      .then((res) => res.json())
+      .then((res) => console.log(res));
   };
 
   return (

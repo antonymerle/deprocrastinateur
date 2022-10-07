@@ -4,7 +4,7 @@ const Taches = ({ taches, onDelete, onToggle }) => {
     <>
       {taches.map((tache) => (
         <Tache
-          key={tache.id}
+          key={tache.tache_id}
           tache={tache}
           onDelete={onDelete}
           onToggle={onToggle}
