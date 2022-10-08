@@ -36,12 +36,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  console.log(req.body);
-
   const { texte, echeance, rappel } = req.body;
 
   const query = {
-    text: "INSERT INTO tache(texte, echeance, rappel) VALUES($1, $2, $3)",
+    text: "INSERT INTO tache(texte, echeance, rappel) VALUES($1, $2, $3) returning tache_id",
     values: [texte, echeance, rappel],
   };
 
@@ -49,7 +47,9 @@ app.post("/", (req, res) => {
     if (dberr) {
       res.status(400).json({ msg: dberr.message });
     } else {
-      res.status(200).json({ msg: "Tache ajoutée." });
+      res
+        .status(200)
+        .json({ msg: "Tache ajoutée.", tache_id: dbres.rows[0]["tache_id"] });
     }
   });
 });
