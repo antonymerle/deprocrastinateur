@@ -6,7 +6,6 @@
   padding: 0;
 }
 
-/* sources https://unsplash.com/photos/c9OCWLka764 */
 body {
   font-family: 'Poppins', sans-serif;
   display: flex;
@@ -19,12 +18,12 @@ body {
 }
 
 .container {
-  max-width: vh;
+  min-width: 66vh;
   margin: 1px auto;
   overflow: auto;
   min-height: 300px;
   border: 1px solid #fafafa;
-  padding: 33px;
+  padding: 20px 20px 20px 20px;
   border-radius: 5px;
   background-color: #97B1A6;
 }
@@ -116,3 +115,9 @@ body {
   height: 20px;
 }
 
+footer {
+  margin-top : 20px;
+  display: flex;
+  justify-content: center;
+
+}

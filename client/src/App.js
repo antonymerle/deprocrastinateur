@@ -2,12 +2,13 @@ import Header from "./components/Header";
 import Taches from "./components/Taches";
 import AjouteTache from "./components/AjouteTache";
 import { useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 function App() {
+  const baseURL = "http://localhost:5000/";
+
   const [afficheForm, setAfficheForm] = useState(false);
   const [taches, setTaches] = useState([]);
-
-  const baseURL = "http://localhost:5000/";
 
   useEffect(() => {
     const fetchTaches = async () => {
@@ -15,14 +16,15 @@ function App() {
         .then((res) => res.json())
         .then((data) => setTaches(data));
     };
+
     fetchTaches();
-  }, [taches]);
+  }, []);
 
   const onAfficheForm = () => {
     setAfficheForm(!afficheForm);
   };
 
-  const ajouteTache = (tache) => {
+  const ajouteTache = async (tache) => {
     const postRequest = new Request(baseURL, {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
@@ -30,45 +32,58 @@ function App() {
     });
 
     console.log(postRequest);
-
-    fetch(postRequest)
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+    const response = await fetch(postRequest);
+    if (response.status === 200) {
+      const data = await response.json();
+      setTaches([...taches, { ...tache, tache_id: data.tache_id }]);
+    }
   };
 
-  const deleteTache = (tache_id) => {
+  const deleteTache = async (tache_id) => {
     const deleteRequest = new Request(baseURL, {
       method: "DELETE",
       headers: new Headers({ "Content-Type": "application/json" }),
       body: JSON.stringify({ tache_id }),
     });
 
-    fetch(deleteRequest)
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+    const response = await fetch(deleteRequest);
+    // On vérifie le statut HTTP avant de modifier l'état.
+    if (response.status === 200) {
+      setTaches(taches.filter((tache) => tache.tache_id !== tache_id));
+    }
   };
 
-  const rappelTache = (tache_id, rappel) => {
+  const rappelTache = async (tache_id, rappel) => {
     const putRequest = new Request(baseURL, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tache_id, rappel: !rappel }),
     });
 
-    fetch(putRequest)
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+    const response = await fetch(putRequest);
+    // On vérifie le statut HTTP avant de modifier l'état.
+    if (response.status === 200) {
+      setTaches(
+        taches.map((tache) =>
+          tache.tache_id === tache_id ? { ...tache, rappel: !rappel } : tache
+        )
+      );
+    }
   };
 
   return (
     <div className="container">
       <Header onClick={onAfficheForm} afficheFormState={afficheForm} />
+
       {afficheForm ? <AjouteTache onAdd={ajouteTache} /> : null}
       {taches.length > 0 ? (
         <Taches taches={taches} onDelete={deleteTache} onToggle={rappelTache} />
       ) : (
-        "Tu es à jour !"
+        "Il reste forcément quelque chose à faire."
       )}
+
+      <Link to="/apropos">A propos</Link>
+      <Outlet />
     </div>
   );
 }
