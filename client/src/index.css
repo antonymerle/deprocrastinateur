@@ -27,6 +27,20 @@ body {
   border-radius: 5px;
   background-color: #97B1A6;
 }
+.apropos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 66vh;
+  margin: 1px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid #fafafa;
+  padding: 20px 20px 20px 20px;
+  border-radius: 5px;
+  background-color: #97B1A6;
+}
 
 .header {
   display: flex;
